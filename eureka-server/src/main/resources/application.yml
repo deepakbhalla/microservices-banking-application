@@ -1,0 +1,15 @@
+spring:
+   application:
+      name: eureka-server
+
+server:
+   port: 8302
+
+eureka:
+   client: 
+      registerWithEureka: false # This project is not a client
+      fetchRegister: false      # don't register myself as I myself is a server
+      server:
+         withTimeInMsWhenSyncEmpty: 0
+      serviceUrl:
+         defaultZone: http://localhost:8761/eureka/
