@@ -21,6 +21,11 @@ import com.bank.authentication.model.CustomerDetails;
 import com.bank.authentication.model.RegistrationResponse;
 import com.bank.authentication.service.AuthentationService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 /**
  * Responsible for authentication tasks (login, registration etc.).
  * 
@@ -29,6 +34,7 @@ import com.bank.authentication.service.AuthentationService;
  */
 @RestController
 @RequestMapping(value = RestfulEndPoints.AUTHENTICATION_RESOURCE)
+@Api(value = "authentication", description="Operations pertaining to customer authentication.")
 public class AuthenticationControllerImpl implements AuthenticationController {
 
     /**
@@ -43,6 +49,7 @@ public class AuthenticationControllerImpl implements AuthenticationController {
     /**
      * Sevice health check resource.
      */
+    @ApiOperation(value = "Check the heart beat.")
     @GetMapping(path = RestfulEndPoints.AUTHENTICATION_HEALTH_CHECK)
     public String healthCheck() {
         return "Hello, I am 'Authentication Service' and running quite healthy at port: "
@@ -57,6 +64,12 @@ public class AuthenticationControllerImpl implements AuthenticationController {
      * @return response - AuthenticationResponse
      */
     @Override
+    @ApiOperation(value = "Authenticate customer")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully authenticated the customer."),
+            @ApiResponse(code = 401, message = "Customer authentication failed."),
+            @ApiResponse(code = 500, message = "Something went wrong. Internal server error.")
+    })
     @GetMapping(path = RestfulEndPoints.AUTHENTICATION_LOGON)
     public ResponseEntity<AuthenticationResponse> authenticateUser(@RequestHeader String username,
             @RequestHeader String password) {
