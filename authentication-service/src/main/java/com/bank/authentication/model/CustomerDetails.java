@@ -1,30 +1,32 @@
 package com.bank.authentication.model;
 
-import java.util.Date;
-
+/**
+ * Model class to represent customer details.
+ * 
+ * @author Deepak Bhalla
+ *
+ */
 public class CustomerDetails {
 
+    private Long id;
     private Long partySysId;
-    private String username;
-    private String password;
     private String firstName;
     private String middleName;
     private String lastName;
-    private Date dateOfBirth;
+    private String dateOfBirth;
     private String address;
     private String gender;
     private String meritalStatus;
     private String emailAddress;
     private String nationalInsuranceNumber;
 
-    public CustomerDetails(Long partySysId, String username, String password, String firstName, String middleName,
-            String lastName, Date dateOfBirth, String address, String gender, String meritalStatus, String emailAddress,
+    public CustomerDetails(Long id, Long partySysId, String firstName, String middleName, String lastName,
+            String dateOfBirth, String address, String gender, String meritalStatus, String emailAddress,
             String nationalInsuranceNumber) {
 
         super();
+        this.id = id;
         this.partySysId = partySysId;
-        this.username = username;
-        this.password = password;
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
@@ -36,16 +38,15 @@ public class CustomerDetails {
         this.nationalInsuranceNumber = nationalInsuranceNumber;
     }
 
+    public CustomerDetails() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
     public Long getPartySysId() {
         return partySysId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public String getFirstName() {
@@ -60,7 +61,7 @@ public class CustomerDetails {
         return lastName;
     }
 
-    public Date getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 

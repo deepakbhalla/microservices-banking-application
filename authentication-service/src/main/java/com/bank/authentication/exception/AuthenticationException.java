@@ -1,5 +1,11 @@
 package com.bank.authentication.exception;
 
+/**
+ * Exception class for authentication operation.
+ * 
+ * @author Deepak Bhalla
+ *
+ */
 public class AuthenticationException extends Exception {
 
     private static final long serialVersionUID = -4598129403925097427L;

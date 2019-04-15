@@ -8,6 +8,12 @@ import org.springframework.stereotype.Service;
 import com.bank.customer.model.CustomerDetails;
 import com.bank.customer.repository.CustomerDetailsRepository;
 
+/**
+ * Customer details service class.
+ * 
+ * @author Deepak Bhalla
+ *
+ */
 @Service
 public class CustomerDetailsService {
 
@@ -15,6 +21,6 @@ public class CustomerDetailsService {
     CustomerDetailsRepository customerRepository;
 
     public List<CustomerDetails> retrieveCustomer(Long partySysId) {
-        return customerRepository.findByPartySysId(partySysId);
+        return customerRepository.findByPartysysid(partySysId);
     }
 }

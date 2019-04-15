@@ -2,6 +2,7 @@ package com.bank.authentication.controller.impl;
 
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,11 +35,18 @@ public class AuthenticationControllerImpl implements AuthenticationController {
      * Service class dependency.
      */
     @Autowired
-    AuthentationService authenticationService;
+    private AuthentationService authenticationService;
 
-    @GetMapping("/hello")
+    @Autowired
+    private Environment env;
+
+    /**
+     * Sevice health check resource.
+     */
+    @GetMapping(path = RestfulEndPoints.AUTHENTICATION_HEALTH_CHECK)
     public String healthCheck() {
-        return "Hello, I am all right, hope you are doing well.";
+        return "Hello, I am 'Authentication Service' and running quite healthy at port: "
+                + env.getProperty("local.server.port");
     }
 
     /**
@@ -58,7 +66,9 @@ public class AuthenticationControllerImpl implements AuthenticationController {
         try {
             CustomerDetails authenticatedCustomer = authenticationService.authenticateCustomer(username, password);
 
-            responseEntity = (authenticatedCustomer != null && authenticatedCustomer.getPartySysId() != 0)
+            boolean isAuthenticated = authenticatedCustomer != null && authenticatedCustomer.getPartySysId() != 0;
+
+            responseEntity = isAuthenticated
                     ? (ResponseEntity.status(HttpStatus.SC_OK)
                             .body(new AuthenticationResponse("User authenticated successfully", HttpStatus.SC_OK,
                                     authenticatedCustomer)))
@@ -80,12 +90,12 @@ public class AuthenticationControllerImpl implements AuthenticationController {
      */
     @Override
     @PostMapping(path = RestfulEndPoints.AUTHENTICATION_REGISTER)
-    public RegistrationResponse registerCustomer(@RequestBody CustomerDetails customerDetails) {
+    public RegistrationResponse registerCustomer(@RequestBody CustomerDetails customerDetails,
+            @RequestHeader String username, @RequestHeader String password) {
         RegistrationResponse response = null;
         try {
             // Register logon details
-            boolean registeredCustomer = authenticationService
-                    .recordLoginDetails(new Login(customerDetails.getUsername(), customerDetails.getPassword()));
+            boolean registeredCustomer = authenticationService.recordLoginDetails(new Login(username, password));
 
             if (registeredCustomer) {
                 response = new RegistrationResponse(true, "User registered successfully", HttpStatus.SC_OK);

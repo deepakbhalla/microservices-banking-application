@@ -9,6 +9,12 @@ import org.springframework.stereotype.Repository;
 
 import com.bank.authentication.entity.Login;
 
+/**
+ * Authentication repository class.
+ * 
+ * @author Deepak Bhalla
+ *
+ */
 @Repository
 public interface AuthenticationRepository extends JpaRepository<Login, Integer> {
 

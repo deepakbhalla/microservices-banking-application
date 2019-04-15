@@ -7,8 +7,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Entity class for login operation.
+ * 
+ * @author Deepak Bhalla
+ *
+ */
 @Entity
-@Table(name="Login")
+@Table(name = "Login")
 public class Login {
 
     @Column(name = "party_sys_id")

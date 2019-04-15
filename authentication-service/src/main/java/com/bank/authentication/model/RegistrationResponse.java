@@ -1,5 +1,11 @@
 package com.bank.authentication.model;
 
+/**
+ * Class for registration response.
+ * 
+ * @author Deepak Bhalla
+ *
+ */
 public class RegistrationResponse {
 
     private boolean isRegistered;

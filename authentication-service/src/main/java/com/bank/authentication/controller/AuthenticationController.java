@@ -19,6 +19,7 @@ public interface AuthenticationController {
 
     /**
      * For the resource health check.
+     * 
      * @return
      */
     public String healthCheck();
@@ -38,5 +39,5 @@ public interface AuthenticationController {
      * @param customerDetails
      * @return boolean - success/failure
      */
-    public RegistrationResponse registerCustomer(CustomerDetails customerDetails);
+    public RegistrationResponse registerCustomer(CustomerDetails customerDetails, String username, String password);
 }

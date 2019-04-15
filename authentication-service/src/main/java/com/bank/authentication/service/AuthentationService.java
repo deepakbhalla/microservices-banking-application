@@ -1,12 +1,13 @@
 package com.bank.authentication.service;
 
-import java.util.Date;
 import java.util.List;
-
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.client.RestTemplate;
 import com.bank.authentication.entity.Login;
 import com.bank.authentication.exception.AuthenticationException;
 import com.bank.authentication.exception.RegistrationException;
@@ -23,6 +24,9 @@ public class AuthentationService {
 
     @Autowired
     AuthenticationRepository authenticationRepository;
+
+    @Autowired
+    RestTemplate restTemplate;
 
     /**
      * Customer logon details are first authenticated in [CUSTOMER_LOGIN_DETAILS]
@@ -42,15 +46,22 @@ public class AuthentationService {
         CustomerDetails authenticatedCustomer = null;
         // Database call to check logon details and customer-service microservice
         List<Login> loginResult = authenticationRepository.findByLoginDetails(username, password);
+
         if (loginResult.size() > 0) {
             Long partySysId = loginResult.get(0).getPartySysId();
-            System.out.println("Customer authenticatd, party sys id: " + partySysId);
 
-            // call to get customer details.
-            authenticatedCustomer = new CustomerDetails(partySysId, "deepakbhalla", "password", "Deepak", "middleName",
-                    "lastName", new Date(), "address", "gender", "meritalStatus", "emailAddress",
-                    "nationalInsuranceNumber");
+            // call to get customer details. authenticatedCustomer = new
+            ResponseEntity<List<CustomerDetails>> response = restTemplate.exchange(
+                    "http://CUSTOMER-SERVICE/api/customer/v1/" + Long.toString(partySysId), HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<CustomerDetails>>() {
+                    });
+
+            List<CustomerDetails> customers = response.getBody();
+            if (customers.size() > 0) {
+                authenticatedCustomer = customers.get(0);
+            }
         }
+
         return authenticatedCustomer;
     }
 
@@ -72,7 +83,7 @@ public class AuthentationService {
                     loginEntity.getPassword());
 
             if (loginResult.size() > 0) {
-                
+
             }
 
             // Database call to record logon details and customer-service
@@ -83,8 +94,8 @@ public class AuthentationService {
         }
 
         // Microservice call to record customer details.
-        CustomerDetails registeredCustomer = new CustomerDetails(Long.valueOf(123456), "deepakbhala", "password",
-                "Deepak", "middleName", "lastName", new Date(), "address", "gender", "meritalStatus", "emailAddress",
+        CustomerDetails registeredCustomer = new CustomerDetails(Long.valueOf(1), Long.valueOf(123456), "Deepak",
+                "middleName", "lastName", "11/11/1978", "address", "gender", "meritalStatus", "emailAddress",
                 "nationalInsuranceNumber");
         return registered;
     }

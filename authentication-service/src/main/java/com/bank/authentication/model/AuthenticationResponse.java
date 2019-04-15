@@ -2,6 +2,12 @@ package com.bank.authentication.model;
 
 import java.io.Serializable;
 
+/**
+ * Class for authentication response.
+ * 
+ * @author Deepak Bhalla
+ *
+ */
 public class AuthenticationResponse implements Serializable {
 
     private static final long serialVersionUID = 1216914398681559012L;
